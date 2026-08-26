@@ -1,3 +1,4 @@
 pvanalytics
 matplotlib
 pandas
+databricks-sql-connector

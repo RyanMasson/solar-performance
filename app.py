@@ -1,22 +1,37 @@
+import os
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import pvanalytics
 from pvanalytics.metrics import performance_ratio_nrel
-from pyspark.sql import SparkSession
+from databricks import sql
 
 st.set_page_config(page_title="Solar System PR Tracker", layout="wide")
 st.title("☀️ Solar System Performance Ratio Analysis")
 
-# Initialize Spark session provided natively by Databricks Apps
-spark = SparkSession.builder.getOrCreate()
+# Database connection helper
+@st.cache_resource
+def get_db_connection():
+    return sql.connect(
+        server_hostname=os.getenv("DATABRICKS_HOST"),
+        http_path=os.getenv("DATABRICKS_HTTP_PATH"),  # Populated when SQL Warehouse resource is attached
+        access_token=os.getenv("DATABRICKS_TOKEN")
+    )
 
-# Cache data loading to prevent re-querying on every UI click
 @st.cache_data(ttl=3600)
 def generate_system_pr_figure(system_id: int):
-    # 1. Fetch time-series data via PySpark
-    df_spark = spark.table("pvdaq_catalog.silver.pvdata_2020_joined").filter(f"system_id = {system_id}")
-    df = df_spark.toPandas()
+    conn = get_db_connection()
+
+    # 1. Fetch time-series data via SQL
+    query_data = f"""
+        SELECT utc_measured_on, ac_power_kw, poa_irradiance, ambient_temp, wind_speed
+        FROM pvdaq_catalog.silver.pvdata_2020_joined
+        WHERE system_id = {system_id}
+        ORDER BY utc_measured_on
+    """
+    with conn.cursor() as cursor:
+        cursor.execute(query_data)
+        df = cursor.fetchall_arrow().to_pandas()
 
     if df.empty:
         raise ValueError(f"No time-series data found for system_id {system_id}.")
@@ -24,13 +39,20 @@ def generate_system_pr_figure(system_id: int):
     df['utc_measured_on'] = pd.to_datetime(df['utc_measured_on'])
     df = df.set_index('utc_measured_on').sort_index()
 
-    # 2. Fetch metadata via PySpark
-    capacities_df = spark.table("pvdaq_catalog.silver.system").filter(f"system_id = {system_id}").select("power").toPandas()
-    
-    if capacities_df.empty or pd.isna(capacities_df['power'].iloc[0]):
+    # 2. Fetch metadata via SQL
+    query_meta = f"""
+        SELECT power 
+        FROM pvdaq_catalog.silver.system 
+        WHERE system_id = {system_id}
+    """
+    with conn.cursor() as cursor:
+        cursor.execute(query_meta)
+        meta_df = cursor.fetchall_arrow().to_pandas()
+
+    if meta_df.empty or pd.isna(meta_df['power'].iloc[0]):
         raise ValueError(f"Missing valid DC capacity metadata for system_id {system_id}.")
 
-    raw_power = float(capacities_df['power'].iloc[0])
+    raw_power = float(meta_df['power'].iloc[0])
     pdc0 = raw_power / 1000.0 if raw_power > 10000 else raw_power
 
     # 3. Calculate full-series PR baseline
