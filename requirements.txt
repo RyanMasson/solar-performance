@@ -1,0 +1,3 @@
+pvanalytics
+matplotlib
+pandas
