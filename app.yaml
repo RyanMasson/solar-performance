@@ -1,0 +1,16 @@
+command: ['streamlit', 'run', 'app.py', '--server.port', '$DATABRICKS_APP_PORT', '--server.address', '0.0.0.0']
+
+env:
+  # Resolved from the SQL warehouse resource you attach to the app in the UI.
+  # The key name here ("sql-warehouse") must match the resource key exactly.
+  - name: 'DATABRICKS_WAREHOUSE_ID'
+    valueFrom: 'sql-warehouse'
+
+  - name: 'PVDAQ_CATALOG'
+    value: 'pvdaq_catalog'
+
+  - name: 'PVDAQ_GOLD_SCHEMA'
+    value: 'gold'
+
+  - name: 'STREAMLIT_GATHER_USAGE_STATS'
+    value: 'false'
