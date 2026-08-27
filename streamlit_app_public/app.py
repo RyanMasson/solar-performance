@@ -114,11 +114,11 @@ st.markdown(
         opacity: 0.72;
         margin-top: 0.4rem;
     }
-    [data-testid="stSidebar"] .app-writeup {
-        font-size: 1.0rem;
-        line-height: 1.5;
-        opacity: 0.72;
-        margin-top: 0.7rem;
+    [data-testid="stSidebar"] .app-caption p {
+        margin: 0 0 0.7rem 0;
+    }
+    [data-testid="stSidebar"] .app-caption p:last-child {
+        margin-bottom: 0;
     }
     div[data-testid="stSelectbox"] label p {
         font-size: 1.3rem !important;
@@ -138,24 +138,17 @@ st.sidebar.markdown(
 )
 
 st.sidebar.markdown(
-    '<div class="app-caption">Daily NREL performance ratio and mean AC power '
-    "output for 13 PV systems in the NREL Photovoltaic Data Acquisition "
-    "(PVDAQ) public dataset.</div>",
-    unsafe_allow_html=True,
-)
-
-st.sidebar.markdown(
-    '<div class="app-caption">Source: NREL Photovoltaic Data Acquisition (PVDAQ) '
-    "public data lake, via the U.S. Department of Energy Open Energy Data "
-    "Initiative (https://data.openei.org/submissions/4568). Metrics computed "
-    'with <a href="https://pvanalytics.readthedocs.io" target="_blank">pvanalytics</a> '
-    "in a Databricks medallion pipeline.</div>",
-    unsafe_allow_html=True,
-)
-
-st.sidebar.markdown(
-    '<div class="app-writeup">Full project write-up at '
-    '<a href="https://ryanmasson.carrd.co" target="_blank">ryanmasson.carrd.co</a></div>',
+    '<div class="app-caption">'
+    "<p>Daily NREL performance ratio and mean AC power output for 13 PV systems "
+    "in the NREL Photovoltaic Data Acquisition (PVDAQ) public dataset.</p>"
+    "<p>Source: U.S. Department of Energy Open Energy Data Initiative "
+    '(<a href="https://data.openei.org/submissions/4568" target="_blank">'
+    "https://data.openei.org/submissions/4568</a>). Metrics computed with "
+    '<a href="https://pvanalytics.readthedocs.io" target="_blank">PVAnalytics</a> '
+    "in a Databricks medallion pipeline.</p>"
+    "<p>Full project write-up at "
+    '<a href="https://ryanmasson.carrd.co" target="_blank">ryanmasson.carrd.co</a></p>'
+    "</div>",
     unsafe_allow_html=True,
 )
 
