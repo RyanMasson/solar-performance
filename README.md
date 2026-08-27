@@ -3,7 +3,7 @@ In this project I built an end-to-end data pipeline using Databricks which pulle
 
 Data source: Deline, Chris, et al. Photovoltaic Data Acquisition (PVDAQ) Public Datasets. NREL, 21 Dec. 2021, Open Energy Data Initiative (OEDI). https://doi.org/10.25984/1846021
 
-Uses the PVAnalytics library: Vining, Will, et al. pvlib/pvanalytics: Version 0.2.2. Version v0.2.2, Zenodo, 27 Nov. 2024, https://doi.org/10.5281/zenodo.14230321
+Uses the PVAnalytics library to calculate performance ratio: Vining, Will, et al. pvlib/pvanalytics: Version 0.2.2. Version v0.2.2, Zenodo, 27 Nov. 2024, https://doi.org/10.5281/zenodo.14230321
 
 Full project write-up at ryanmasson.carrd.co
 
