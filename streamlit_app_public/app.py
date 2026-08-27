@@ -21,6 +21,9 @@ import streamlit as st
 
 DATA_DIR = Path(__file__).parent / "data"
 
+# Systems pinned to the top of the dropdown, in this order
+FEATURED_SYSTEM_IDS = [1283, 1418, 1419]
+
 
 # ---------------------------------------------------------------------------
 # Data
@@ -95,7 +98,7 @@ def build_figure(system_id: int, daily_df: pd.DataFrame, pr_whole_series: float)
 
 st.set_page_config(page_title="PVDAQ System Performance", layout="wide")
 
-st.title("PVDAQ system performance, 2020")
+st.title("Solar PV System Performance in 2020")
 st.caption(
     "Daily NREL performance ratio and mean AC power output for 13 PV systems in "
     "the NREL Photovoltaic Data Acquisition (PVDAQ) public dataset."
@@ -119,28 +122,18 @@ labels = {}
 for _, row in annual_all.iterrows():
     name = str(row.get("public_name", "")).strip()
     labels[int(row["system_id"])] = (
-        f"{int(row['system_id'])} — {name}" if name and name != "nan"
-        else str(int(row["system_id"]))
+        name if name and name != "nan" else str(int(row["system_id"]))
     )
+
+featured = [sid for sid in FEATURED_SYSTEM_IDS if sid in labels]
+remaining = sorted(sid for sid in labels if sid not in featured)
+system_options = featured + remaining
 
 system_id = st.sidebar.selectbox(
     "System",
-    sorted(labels),
+    system_options,
     format_func=lambda sid: labels[sid],
 )
-
-st.sidebar.markdown("---")
-st.sidebar.markdown(
-    "**Performance ratio** compares measured AC output against the output "
-    "expected from measured irradiance and cell temperature. Values near 1.0 "
-    "indicate a system performing to specification."
-)
-if manifest.get("daytime_poa_threshold_w_m2"):
-    st.sidebar.caption(
-        f"Only intervals above {manifest['daytime_poa_threshold_w_m2']} W/m² "
-        "plane-of-array irradiance contribute to PR, which excludes night and "
-        "pre-inverter-startup periods."
-    )
 
 # --- main ------------------------------------------------------------------
 
