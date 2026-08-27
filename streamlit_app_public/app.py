@@ -120,11 +120,6 @@ st.markdown(
         opacity: 0.72;
         margin-top: 0.7rem;
     }
-    .sun-mark {
-        display: flex;
-        justify-content: center;
-        margin: 0.2rem 0 0.6rem 0;
-    }
     div[data-testid="stSelectbox"] label p {
         font-size: 1.3rem !important;
         font-weight: 600;
@@ -143,43 +138,18 @@ st.sidebar.markdown(
 )
 
 st.sidebar.markdown(
-    """
-    <div class="sun-mark">
-    <svg viewBox="0 0 200 200" width="150" height="150" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <radialGradient id="sunCore" cx="42%" cy="38%">
-          <stop offset="0%" stop-color="#FFF0BE"/>
-          <stop offset="55%" stop-color="#FCB92C"/>
-          <stop offset="100%" stop-color="#EF8620"/>
-        </radialGradient>
-      </defs>
-      <g stroke="#F5A623" stroke-width="7" stroke-linecap="round">
-        <line x1="100" y1="16" x2="100" y2="40" transform="rotate(0 100 100)"/>
-        <line x1="100" y1="24" x2="100" y2="41" transform="rotate(30 100 100)"/>
-        <line x1="100" y1="16" x2="100" y2="40" transform="rotate(60 100 100)"/>
-        <line x1="100" y1="24" x2="100" y2="41" transform="rotate(90 100 100)"/>
-        <line x1="100" y1="16" x2="100" y2="40" transform="rotate(120 100 100)"/>
-        <line x1="100" y1="24" x2="100" y2="41" transform="rotate(150 100 100)"/>
-        <line x1="100" y1="16" x2="100" y2="40" transform="rotate(180 100 100)"/>
-        <line x1="100" y1="24" x2="100" y2="41" transform="rotate(210 100 100)"/>
-        <line x1="100" y1="16" x2="100" y2="40" transform="rotate(240 100 100)"/>
-        <line x1="100" y1="24" x2="100" y2="41" transform="rotate(270 100 100)"/>
-        <line x1="100" y1="16" x2="100" y2="40" transform="rotate(300 100 100)"/>
-        <line x1="100" y1="24" x2="100" y2="41" transform="rotate(330 100 100)"/>
-      </g>
-      <circle cx="100" cy="100" r="44" fill="url(#sunCore)"/>
-      <circle cx="100" cy="100" r="44" fill="none" stroke="#EF8620"
-              stroke-width="2" opacity="0.5"/>
-    </svg>
-    </div>
-    """,
+    '<div class="app-caption">Daily NREL performance ratio and mean AC power '
+    "output for 13 PV systems in the NREL Photovoltaic Data Acquisition "
+    "(PVDAQ) public dataset.</div>",
     unsafe_allow_html=True,
 )
 
 st.sidebar.markdown(
-    '<div class="app-caption">Daily NREL performance ratio and mean AC power '
-    "output for 13 PV systems in the NREL Photovoltaic Data Acquisition "
-    "(PVDAQ) public dataset.</div>",
+    '<div class="app-caption">Source: NREL Photovoltaic Data Acquisition (PVDAQ) '
+    "public data lake, via the U.S. Department of Energy Open Energy Data "
+    "Initiative (https://data.openei.org/submissions/4568). Metrics computed "
+    'with <a href="https://pvanalytics.readthedocs.io" target="_blank">pvanalytics</a> '
+    "in a Databricks medallion pipeline.</div>",
     unsafe_allow_html=True,
 )
 
@@ -254,11 +224,5 @@ st.download_button(
 
 st.markdown("---")
 generated = manifest.get("generated_at_utc")
-st.caption(
-    "Source: NREL Photovoltaic Data Acquisition (PVDAQ) public data lake, via the "
-    "U.S. Department of Energy Open Energy Data Initiative "
-    "(https://data.openei.org/submissions/4568). Metrics computed with "
-    "[pvanalytics](https://pvanalytics.readthedocs.io) in a Databricks "
-    "medallion pipeline."
-    + (f"  \nData generated {generated}." if generated else "")
-)
+if generated:
+    st.caption(f"Data generated {generated}.")
