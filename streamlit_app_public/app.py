@@ -98,8 +98,8 @@ def build_figure(system_id: int, daily_df: pd.DataFrame, pr_whole_series: float)
 
 st.set_page_config(page_title="PVDAQ System Performance", layout="wide")
 
-st.title("Solar PV System Performance in 2020")
-st.caption(
+st.sidebar.title("Solar PV System Performance in 2020")
+st.sidebar.caption(
     "Daily NREL performance ratio and mean AC power output for 13 PV systems in "
     "the NREL Photovoltaic Data Acquisition (PVDAQ) public dataset."
 )
@@ -116,7 +116,7 @@ except FileNotFoundError:
 
 manifest = load_manifest()
 
-# --- sidebar ---------------------------------------------------------------
+# --- system selection ------------------------------------------------------
 
 labels = {}
 for _, row in annual_all.iterrows():
@@ -129,7 +129,7 @@ featured = [sid for sid in FEATURED_SYSTEM_IDS if sid in labels]
 remaining = sorted(sid for sid in labels if sid not in featured)
 system_options = featured + remaining
 
-system_id = st.sidebar.selectbox(
+system_id = st.selectbox(
     "System",
     system_options,
     format_func=lambda sid: labels[sid],
