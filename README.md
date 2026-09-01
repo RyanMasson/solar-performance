@@ -7,4 +7,6 @@ Uses the PVAnalytics library to calculate performance ratio: Vining, Will, et al
 
 Full project write-up at ryanmasson.carrd.co
 
+![Alt text](solar_performance_diagram.png)
+
 Acknowledgment: I used Anthropic Claude (Opus 5) and Google Gemini (3.6 Flash) during code development for this project.
