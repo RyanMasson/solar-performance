@@ -1,5 +1,5 @@
 # solar-performance
-In this project I built an end-to-end data pipeline using Databricks which pulled data from the DOE’s Photovoltaic Data Acquisition (PVDAQ) Public Datasets. The pipeline batch processed over 44 million rows of sensor data from 13 PV systems in 2020, fed them through a medallion architecture, and served the results to a Streamlit data app for reporting performance ratio over time to stakeholders. A Lakeflow Job orchestrated the pipeline for efficient scheduling and updates.
+In this project I built an end-to-end data pipeline using Databricks which pulled data from the DOE’s Photovoltaic Data Acquisition (PVDAQ) Public Datasets. The pipeline batch processed over 44 million rows of sensor data from 13 PV systems in 2020, fed them through a medallion architecture, and served the results to a Streamlit data app for reporting performance ratio of various solar PV systems. A Lakeflow Job orchestrated the pipeline for efficient scheduling and updates.
 
 Data source: Deline, Chris, et al. Photovoltaic Data Acquisition (PVDAQ) Public Datasets. NREL, 21 Dec. 2021, Open Energy Data Initiative (OEDI). https://doi.org/10.25984/1846021
 
